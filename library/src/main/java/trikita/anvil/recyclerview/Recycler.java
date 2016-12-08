@@ -124,8 +124,8 @@ public final class Recycler {
                     Object item = items.get(pos);
                     return item == null ? 0 : item.getClass().hashCode();
                 }
-                public void view(RecyclerView.ViewHolder holder) {
-                    r.view(holder);
+                public void view(RecyclerView.ViewHolder holder, int viewType) {
+                    r.view(holder, viewType);
                 }
             };
             a.setHasStableIds(false);
@@ -134,6 +134,6 @@ public final class Recycler {
     }
 
     public interface AdapterRenderable {
-        void view(RecyclerView.ViewHolder vh);
+        void view(RecyclerView.ViewHolder vh, int viewType);
     }
 }

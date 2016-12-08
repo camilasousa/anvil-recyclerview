@@ -8,7 +8,7 @@ public abstract class RenderableRecyclerViewAdapter
         extends RecyclerView.Adapter<RenderableRecyclerViewAdapter.MountHolder> {
 
     @Override
-    public MountHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MountHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         FrameLayout root = new FrameLayout(parent.getContext());
         root.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -17,27 +17,27 @@ public abstract class RenderableRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final MountHolder h, int position) {
-        if (h.mount == null) {
-            h.mount = new Anvil.Mount((ViewGroup) h.itemView, new Anvil.Renderable() {
+    public void onBindViewHolder(final MountHolder holder, int position) {
+        if (holder.mount == null) {
+            holder.mount = new Anvil.Mount(holder.itemView, new Anvil.Renderable() {
                 public void view() {
-                    RenderableRecyclerViewAdapter.this.view(h);
+                    RenderableRecyclerViewAdapter.this.view(
+                            holder,
+                            getItemViewType(holder.getAdapterPosition()));
                 }
             });
-            Anvil.render(h.mount);
-        } else {
-            Anvil.render(h.mount);
         }
+        Anvil.render(holder.mount);
     }
 
-    public static class MountHolder extends RecyclerView.ViewHolder {
+    static class MountHolder extends RecyclerView.ViewHolder {
         private Anvil.Mount mount;
 
-        public MountHolder(ViewGroup itemView) {
+        MountHolder(ViewGroup itemView) {
             super(itemView);
         }
     }
 
-    public abstract void view(RecyclerView.ViewHolder holder);
+    public abstract void view(RecyclerView.ViewHolder holder, int viewType);
 }
 
